@@ -1,73 +1,120 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="SprachKasse – Deutsch für den Einzelhandel. A2 bis B1 für polnischsprachige Lernende.">
   <meta name="theme-color" content="#0f766e">
   <title>SprachKasse – Deutsch für den Einzelhandel</title>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+
   <div id="app">
+
     <aside id="sidebar" class="sidebar" aria-label="Hauptnavigation">
+
       <div class="sidebar-header">
         <span class="logo-mark">SK</span>
         <span class="logo-text">SprachKasse</span>
       </div>
+
       <nav class="sidebar-nav">
+
         <button class="nav-item active" data-page="dashboard" aria-current="page">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
           <span>Dashboard</span>
         </button>
+
         <button class="nav-item" data-page="learn">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+          </svg>
           <span>Lernen</span>
         </button>
+
         <button class="nav-item" data-page="dictionary">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            <line x1="8" y1="7" x2="16" y2="7"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
           <span>Wörter</span>
         </button>
+
         <button class="nav-item" data-page="stats">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
           <span>Fortschritt</span>
         </button>
+
         <button class="nav-item" data-page="profile">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
           <span>Profil</span>
         </button>
+
       </nav>
     </aside>
 
+
     <main id="main" class="main">
+
       <section id="page-dashboard" class="page active" aria-labelledby="dashboard-title">
+
         <header class="page-header">
           <h1 id="dashboard-title" class="page-title">Willkommen zurück!</h1>
           <p class="page-subtitle">Deutsch für den Einzelhandel</p>
         </header>
 
         <div class="dashboard-grid">
+
           <div class="card card-level">
             <span class="card-label">Dein Niveau</span>
             <span id="dash-level" class="card-value">A2</span>
           </div>
+
           <div class="card card-xp">
             <span class="card-label">Gesamt-XP</span>
             <span id="dash-xp" class="card-value">0</span>
           </div>
+
           <div class="card card-streak">
             <span class="card-label">Streak</span>
             <span id="dash-streak" class="card-value">0 Tage</span>
           </div>
+
           <div class="card card-daily">
             <span class="card-label">Tagesziel</span>
+
             <div class="daily-progress">
-              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="50">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="50"
+              >
                 <div id="dash-daily-bar" class="progress-fill" style="width: 0%"></div>
               </div>
+
               <span id="dash-daily-text" class="daily-text">0 / 50 XP</span>
             </div>
           </div>
+
         </div>
 
         <div class="card card-next-lesson">
@@ -76,153 +123,265 @@
           <p id="dash-next-level" class="next-level">A2 · Kundenkontakt</p>
           <button id="btn-continue" class="btn btn-primary btn-lg">Weiterlernen</button>
         </div>
+
       </section>
 
+
       <section id="page-learn" class="page" aria-labelledby="learn-title">
+
         <header class="page-header">
           <h1 id="learn-title" class="page-title">Lernpfad</h1>
           <p class="page-subtitle">Von A2 bis B1 – Schritt für Schritt</p>
         </header>
-        <div id="learning-path" class="learning-path" role="list">
-        </div>
+
+        <div id="learning-path" class="learning-path" role="list"></div>
+
       </section>
 
+
       <section id="page-lesson" class="page" aria-labelledby="lesson-title">
+
         <header class="lesson-header">
-          <button id="btn-back-lesson" class="btn btn-ghost btn-icon" aria-label="Zurück zum Lernpfad">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+
+          <button
+            id="btn-back-lesson"
+            class="btn btn-ghost btn-icon"
+            aria-label="Zurück zum Lernpfad"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
           </button>
+
           <div class="lesson-progress-wrap">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="0"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
               <div id="lesson-progress-bar" class="progress-fill" style="width: 0%"></div>
             </div>
+
             <span id="lesson-progress-text" class="lesson-progress-text">1 / 10</span>
           </div>
+
         </header>
 
         <div class="lesson-body">
+
           <h2 id="lesson-title" class="lesson-title sr-only">Lektion</h2>
+
           <p id="exercise-question" class="exercise-question"></p>
 
-          <div id="exercise-area" class="exercise-area">
-          </div>
+          <div id="exercise-area" class="exercise-area"></div>
 
           <div class="hints-area">
+
             <button class="hint-btn" data-hint="german" aria-expanded="false">
               <span class="hint-label">Tipp 1 · Deutsch</span>
               <span class="hint-content" id="hint-german" hidden></span>
             </button>
+
             <button class="hint-btn" data-hint="polish" aria-expanded="false">
               <span class="hint-label">Tipp 2 · Polski</span>
               <span class="hint-content" id="hint-polish" hidden></span>
             </button>
+
             <button class="hint-btn" data-hint="solution" aria-expanded="false">
               <span class="hint-label">Tipp 3 · Lösung</span>
               <span class="hint-content" id="hint-solution" hidden></span>
             </button>
+
           </div>
 
-          <div id="feedback" class="feedback" hidden role="status" aria-live="polite"></div>
+          <div
+            id="feedback"
+            class="feedback"
+            hidden
+            role="status"
+            aria-live="polite"
+          ></div>
 
           <div class="lesson-actions">
-            <button id="btn-check" class="btn btn-primary btn-lg" disabled>Prüfen</button>
-            <button id="btn-next" class="btn btn-primary btn-lg" hidden>Weiter</button>
+            <button id="btn-check" class="btn btn-primary btn-lg" disabled>
+              Prüfen
+            </button>
+
+            <button id="btn-next" class="btn btn-primary btn-lg" hidden>
+              Weiter
+            </button>
           </div>
+
         </div>
+
       </section>
+
+
       <section id="page-dictionary" class="page" aria-labelledby="dict-title">
+
         <header class="page-header">
           <h1 id="dict-title" class="page-title">Wörter</h1>
           <p class="page-subtitle">Wichtige Begriffe für den Einzelhandel</p>
         </header>
+
         <div class="search-wrap">
           <label for="dict-search" class="sr-only">Wort suchen</label>
-          <input type="search" id="dict-search" class="search-input" placeholder="Suchen (Deutsch oder Polski)…" autocomplete="off">
+
+          <input
+            type="search"
+            id="dict-search"
+            class="search-input"
+            placeholder="Suchen (Deutsch oder Polski)…"
+            autocomplete="off"
+          >
         </div>
-        <div id="dict-list" class="dict-list" role="list">
-        </div>
+
+        <div id="dict-list" class="dict-list" role="list"></div>
+
       </section>
+
+
       <section id="page-stats" class="page" aria-labelledby="stats-title">
+
         <header class="page-header">
           <h1 id="stats-title" class="page-title">Fortschritt</h1>
           <p class="page-subtitle">Dein Lernstand auf einen Blick</p>
         </header>
+
         <div class="stats-grid">
+
           <div class="card">
             <span class="card-label">Gesamt-XP</span>
             <span id="stats-xp" class="card-value">0</span>
           </div>
+
           <div class="card">
             <span class="card-label">Abgeschlossene Lektionen</span>
             <span id="stats-lessons" class="card-value">0</span>
           </div>
+
           <div class="card">
             <span class="card-label">Gelernte Wörter</span>
             <span id="stats-words" class="card-value">0</span>
           </div>
+
           <div class="card">
             <span class="card-label">Aktuelles Niveau</span>
             <span id="stats-level" class="card-value">A2</span>
           </div>
+
           <div class="card">
             <span class="card-label">Streak</span>
             <span id="stats-streak" class="card-value">0 Tage</span>
           </div>
+
           <div class="card">
             <span class="card-label">Tagesziel heute</span>
             <span id="stats-daily" class="card-value">0 / 50 XP</span>
           </div>
+
         </div>
+
       </section>
+
+
       <section id="page-profile" class="page" aria-labelledby="profile-title">
+
         <header class="page-header">
           <h1 id="profile-title" class="page-title">Profil</h1>
         </header>
+
         <div class="profile-card card">
+
           <label for="profile-name" class="form-label">Dein Name</label>
-          <input type="text" id="profile-name" class="form-input" placeholder="Name eingeben…" maxlength="40" autocomplete="name">
-          <button id="btn-save-name" class="btn btn-secondary">Name speichern</button>
+
+          <input
+            type="text"
+            id="profile-name"
+            class="form-input"
+            placeholder="Name eingeben…"
+            maxlength="40"
+            autocomplete="name"
+          >
+
+          <button id="btn-save-name" class="btn btn-secondary">
+            Name speichern
+          </button>
 
           <div class="profile-stats">
+
             <div class="profile-stat">
               <span class="card-label">Niveau</span>
               <span id="profile-level" class="card-value">A2</span>
             </div>
+
             <div class="profile-stat">
               <span class="card-label">XP</span>
               <span id="profile-xp" class="card-value">0</span>
             </div>
+
             <div class="profile-stat">
               <span class="card-label">Streak</span>
               <span id="profile-streak" class="card-value">0 Tage</span>
             </div>
+
             <div class="profile-stat">
               <span class="card-label">Lektionen</span>
               <span id="profile-lessons" class="card-value">0</span>
             </div>
+
           </div>
+
         </div>
+
       </section>
+
     </main>
+
+
     <nav id="bottom-nav" class="bottom-nav" aria-label="Mobile Navigation">
+
       <button class="bottom-nav-item active" data-page="dashboard" aria-current="page">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
         <span>Start</span>
       </button>
+
       <button class="bottom-nav-item" data-page="learn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+        </svg>
         <span>Lernen</span>
       </button>
+
       <button class="bottom-nav-item" data-page="dictionary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+          <line x1="8" y1="7" x2="16" y2="7"/>
+          <line x1="8" y1="11" x2="14" y2="11"/>
+        </svg>
         <span>Wörter</span>
       </button>
+
       <button class="bottom-nav-item" data-page="profile">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
         <span>Profil</span>
       </button>
+
     </nav>
+
   </div>
+
+
   <script src="data/lessons-01-10.js"></script>
   <script src="data/lessons-11-25.js"></script>
   <script src="data/lessons-26-50.js"></script>
@@ -233,5 +392,6 @@
   <script src="js/exercises.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
+
 </body>
 </html>
