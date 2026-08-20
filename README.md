@@ -4,9 +4,7 @@ Link: https://lukas-56376.github.io/Sprachkasse/
 
 ## What is this?
 
-Sprachkasse is a little web app I'm building to help Polish speakers learn German for working in retail (like on a checkout / in a shop). You go from A2 to B1 level through real situations you'd actually run into at work — greeting customers, small talk at the register, retail vocab, that kind of stuff.
-
-Since it's for Polish speakers, hints are given in German first and in Polish if you're stuck, so you're not just left hanging.
+Sprachkasse is like Duolingo, but for the retail so all Polish speaking people can learn German that would be used daily in Retail.
 
 ## What it can do
 
@@ -15,13 +13,10 @@ Since it's for Polish speakers, hints are given in German first and in Polish if
 - **Hints** – each exercise has 3 hints: one in German, one in Polish, and the actual solution if you're really stuck
 - **Words** – vocab list you can search through
 - **Progress page** – XP, lessons done, words learned, level, streak, daily goal
-- **Profile** – set your name, see your stats
-
-Simple navigation bar (Home / Learn / Words / Profile), works really well on mobile too.
 
 ## Who it's for
 
-Basically anyone who speaks Polish and works (or wants to work) in a German-speaking retail job and wants to actually learn the useful stuff instead of generic textbook German.
+Basically anyone who speaks Polish and works (or wants to work) in  German retail and wants to actually learn the useful stuff instead of generic textbook German.
 
 ## Fun facts:
 - It has 100 lessons and more are coming soon...
