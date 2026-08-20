@@ -23,6 +23,10 @@ Simple navigation bar (Home / Learn / Words / Profile), works really well on mob
 
 Basically anyone who speaks Polish and works (or wants to work) in a German-speaking retail job and wants to actually learn the useful stuff instead of generic textbook German.
 
+## Fun facts:
+- It has 100 lessons and more are coming soon...
+- You have a dictionary with 50+ words in it, with a example sentence.
+
 ## The Idea behind it
 
 I have developed it for my aunt who moved recently to Vienna(Austria) and that's how she can learn German without any paywalls, or general used words, as knowing, how to ask someone if he wants to go swimming later that day, doesn't have a use in Retail.
