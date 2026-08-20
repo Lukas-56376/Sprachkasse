@@ -26,7 +26,6 @@
 
   --radius: 5px;
   --small-radius: 4px;
-
   --nav-height: 64px;
   --sidebar-width: 225px;
 
@@ -77,9 +76,7 @@ body {
   max-width: 720px;
   margin: 0 auto;
   padding: 18px;
-  padding-bottom: calc(
-    var(--nav-height) + 18px + env(safe-area-inset-bottom)
-  );
+  padding-bottom: calc(var(--nav-height) + 18px + env(safe-area-inset-bottom));
 }
 
 .page {
@@ -680,8 +677,10 @@ body {
 .bottom-nav-item {
   display: flex;
   flex: 1;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 3px;
   min-height: 48px;
   padding: 8px 4px;
   background: none;
@@ -690,9 +689,7 @@ body {
   font-family: inherit;
   font-size: 0.69rem;
   cursor: pointer;
-  gap: 3px;
   -webkit-tap-highlight-color: transparent;
-  flex-direction: column;
 }
 
 .bottom-nav-item svg {
@@ -824,8 +821,6 @@ body {
     max-width: 1120px;
   }
 }
-
-/* Keyboard focus */
 
 :focus-visible {
   outline: 2px solid var(--green);
