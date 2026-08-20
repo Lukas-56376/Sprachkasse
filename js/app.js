@@ -14,7 +14,6 @@ window.onLessonComplete = function (lessonId, bonusXP) {
   renderLearningPath();
 };
 
-// Navigation
 document.querySelectorAll('[data-page]').forEach(btn => {
   btn.addEventListener('click', () => {
     const page = btn.dataset.page;
@@ -22,13 +21,11 @@ document.querySelectorAll('[data-page]').forEach(btn => {
   });
 });
 
-// Continue button
 document.getElementById('btn-continue')?.addEventListener('click', () => {
   const id = window.appState.currentLessonId || 1;
   startLessonView(id);
 });
 
-// Lesson controls
 document.getElementById('btn-back-lesson')?.addEventListener('click', () => {
   showPage('learn');
 });
@@ -41,7 +38,6 @@ document.getElementById('btn-next')?.addEventListener('click', () => {
   nextExercise();
 });
 
-// Hints
 document.querySelectorAll('.hint-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const type = btn.dataset.hint;
@@ -49,12 +45,10 @@ document.querySelectorAll('.hint-btn').forEach(btn => {
   });
 });
 
-// Dictionary search
 document.getElementById('dict-search')?.addEventListener('input', (e) => {
   renderDictionary(e.target.value);
 });
 
-// Profile name
 document.getElementById('btn-save-name')?.addEventListener('click', () => {
   const input = document.getElementById('profile-name');
   const name = (input?.value || '').trim().slice(0, 40);
@@ -69,7 +63,6 @@ document.getElementById('btn-save-name')?.addEventListener('click', () => {
   setTimeout(() => { btn.textContent = old; }, 1500);
 });
 
-// Init
 document.addEventListener('DOMContentLoaded', () => {
   window.appState = loadProgress();
   window.appState = resetDailyIfNeeded(window.appState);
