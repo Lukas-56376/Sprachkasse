@@ -9,63 +9,77 @@ window.onCorrectAnswer = function (xpGain) {
 window.onLessonComplete = function (lessonId, bonusXP) {
   window.appState = addXP(window.appState, bonusXP);
   window.appState = markLessonComplete(window.appState, lessonId);
+
   saveProgress(window.appState);
   updateDashboard();
   renderLearningPath();
 };
 
-document.querySelectorAll('[data-page]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const page = btn.dataset.page;
-    if (page) showPage(page);
+document.querySelectorAll("[data-page]").forEach(function (button) {
+  button.addEventListener("click", function () {
+    const page = button.dataset.page;
+
+    if (page) {
+      showPage(page);
+    }
   });
 });
 
-document.getElementById('btn-continue')?.addEventListener('click', () => {
-  const id = window.appState.currentLessonId || 1;
-  startLessonView(id);
+document.getElementById("btn-continue")?.addEventListener("click", function () {
+  const lessonId = window.appState.currentLessonId || 1;
+  startLessonView(lessonId);
 });
 
-document.getElementById('btn-back-lesson')?.addEventListener('click', () => {
-  showPage('learn');
+document.getElementById("btn-back-lesson")?.addEventListener("click", function () {
+  showPage("learn");
 });
 
-document.getElementById('btn-check')?.addEventListener('click', () => {
+document.getElementById("btn-check")?.addEventListener("click", function () {
   checkAnswer();
 });
 
-document.getElementById('btn-next')?.addEventListener('click', () => {
+document.getElementById("btn-next")?.addEventListener("click", function () {
   nextExercise();
 });
 
-document.querySelectorAll('.hint-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const type = btn.dataset.hint;
-    if (type) showHint(type);
+document.querySelectorAll(".hint-btn").forEach(function (button) {
+  button.addEventListener("click", function () {
+    const type = button.dataset.hint;
+
+    if (type) {
+      showHint(type);
+    }
   });
 });
 
-document.getElementById('dict-search')?.addEventListener('input', (e) => {
-  renderDictionary(e.target.value);
+document.getElementById("dict-search")?.addEventListener("input", function (event) {
+  renderDictionary(event.target.value);
 });
 
-document.getElementById('btn-save-name')?.addEventListener('click', () => {
-  const input = document.getElementById('profile-name');
-  const name = (input?.value || '').trim().slice(0, 40);
+document.getElementById("btn-save-name")?.addEventListener("click", function () {
+  const input = document.getElementById("profile-name");
+  const name = (input?.value || "").trim().slice(0, 40);
+
   window.appState.name = name;
   saveProgress(window.appState);
+
   updateProfile();
   updateDashboard();
-  // Kurzes Feedback
-  const btn = document.getElementById('btn-save-name');
-  const old = btn.textContent;
-  btn.textContent = 'Gespeichert';
-  setTimeout(() => { btn.textContent = old; }, 1500);
+
+  const button = document.getElementById("btn-save-name");
+  const oldText = button.textContent;
+
+  button.textContent = "Gespeichert";
+
+  setTimeout(function () {
+    button.textContent = oldText;
+  }, 1500);
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", function () {
   window.appState = loadProgress();
   window.appState = resetDailyIfNeeded(window.appState);
+
   saveProgress(window.appState);
-  showPage('dashboard');
+  showPage("dashboard");
 });
