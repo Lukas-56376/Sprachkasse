@@ -1,10 +1,10 @@
-# SprachKasse
+# Sprachkasse
 
-🔗 Live: https://lukas-56376.github.io/Sprachkasse/
+Link: https://lukas-56376.github.io/Sprachkasse/
 
 ## What is this?
 
-SprachKasse is a little web app I'm building to help Polish speakers learn German for working in retail (like on a checkout / in a shop). You go from A2 to B1 level through real situations you'd actually run into at work — greeting customers, small talk at the register, retail vocab, that kind of stuff.
+Sprachkasse is a little web app I'm building to help Polish speakers learn German for working in retail (like on a checkout / in a shop). You go from A2 to B1 level through real situations you'd actually run into at work — greeting customers, small talk at the register, retail vocab, that kind of stuff.
 
 Since it's for Polish speakers, hints are given in German first and in Polish if you're stuck, so you're not just left hanging.
 
