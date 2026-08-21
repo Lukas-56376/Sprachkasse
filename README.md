@@ -32,8 +32,5 @@ Still working on it 🚧 — adding more lessons and words as I go.
 
 ## Ai usage
 
-<<<<<<< HEAD
 AI, was only used to debug and write the CSS. The JS/lessons was made by my brother (20 years old). He just used AI to create the Plan of all lessons and the dictionary. 
-=======
-AI, was only used to debug and write the CSS. The JS/lessons was made by my brother (20 years old). He just used AI to create the Plan of all lessons and the dictionary. 
->>>>>>> 41e83c8018d07427113622b39bb6dd392aa8c807
+# Sprachkasse
