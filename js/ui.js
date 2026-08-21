@@ -1,170 +1,132 @@
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const page = document.getElementById('page-' + pageId);
-  if (page) page.classList.add('active');
-
-  document.querySelectorAll('.nav-item, .bottom-nav-item').forEach(btn => {
-    const isActive = btn.dataset.page === pageId;
-    btn.classList.toggle('active', isActive);
-    if (isActive) {
-      btn.setAttribute('aria-current', 'page');
-    } else {
-      btn.removeAttribute('aria-current');
-    }
-  });
-
-  if (pageId === 'dashboard') updateDashboard();
-  if (pageId === 'learn') renderLearningPath();
-  if (pageId === 'dictionary') renderDictionary();
-  if (pageId === 'stats') updateStats();
-  if (pageId === 'profile') updateProfile();
-
-  window.scrollTo(0, 0);
+function showPage(pageId){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+const page=document.getElementById('page-'+pageId);
+if(page)page.classList.add('active');
+document.querySelectorAll('.nav-item,.bottom-nav-item').forEach(btn=>{
+const active=btn.dataset.page===pageId;
+btn.classList.toggle('active',active);
+if(active)btn.setAttribute('aria-current','page');
+else btn.removeAttribute('aria-current');
+});
+if(pageId==='dashboard')updateDashboard();
+if(pageId==='learn')renderLearningPath();
+if(pageId==='dictionary')renderDictionary();
+if(pageId==='stats')updateStats();
+if(pageId==='profile')updateProfile();
+window.scrollTo(0,0);
 }
-
-function updateDashboard() {
-  const state = window.appState || loadProgress();
-  document.getElementById('dash-level').textContent = getCurrentLevel(state);
-  document.getElementById('dash-xp').textContent = state.xp || 0;
-  document.getElementById('dash-streak').textContent = (state.streak || 0) + ' Tage';
-
-  const dailyXP = state.dailyXP || 0;
-  const goal = state.dailyGoal || 50;
-  const pct = Math.min(100, Math.round((dailyXP / goal) * 100));
-  document.getElementById('dash-daily-bar').style.width = pct + '%';
-  document.getElementById('dash-daily-text').textContent =
-    dailyXP >= goal ? 'Tagesziel erreicht! 🎉' : dailyXP + ' / ' + goal + ' XP';
-
-
-   const nextId = state.currentLessonId || 1;
-   const lesson = getLessonById(nextId);
-   if (lesson) {
-    document.getElementById('dash-next-title').textContent =
-      String(lesson.id).padStart(2, '0') + ' – ' + lesson.title;
-    document.getElementById('dash-next-level').textContent =
-      lesson.level + ' · ' + (lesson.category || '');
-  } else {
-    document.getElementById('dash-next-title').textContent = 'Alle Lektionen abgeschlossen!';
-    document.getElementById('dash-next-level').textContent = 'Herzlichen Glückwunsch';
-  }
-
-
-  const title = document.getElementById('dashboard-title');
-  if (state.name) {
-    title.textContent = 'Willkommen zurück, ' + state.name + '!';
-  } else {
-    title.textContent = 'Willkommen zurück!';
-  }
+function updateDashboard(){
+const state=window.appState||loadProgress();
+const levelEl=document.getElementById('dash-level');
+const xpEl=document.getElementById('dash-xp');
+const streakEl=document.getElementById('dash-streak');
+if(levelEl)levelEl.textContent=getCurrentLevel(state);
+if(xpEl)xpEl.textContent=state.xp||0;
+if(streakEl)streakEl.textContent=(state.streak||0)+' Tage';
+const sideStreak=document.getElementById('sidebar-streak-num');
+if(sideStreak)sideStreak.textContent=state.streak||0;
+const dailyXP=state.dailyXP||0;
+const goal=state.dailyGoal||50;
+const pct=Math.min(100,Math.round((dailyXP/goal)*100));
+const bar=document.getElementById('dash-daily-bar');
+const txt=document.getElementById('dash-daily-text');
+if(bar)bar.style.width=pct+'%';
+if(txt)txt.textContent=dailyXP>=goal?'Tagesziel erreicht! 🎉':dailyXP+' / '+goal+' XP';
+const nextId=state.currentLessonId||1;
+const lesson=getLessonById(nextId);
+const titleEl=document.getElementById('dash-next-title');
+const metaEl=document.getElementById('dash-next-level');
+if(lesson&&titleEl){
+titleEl.textContent=String(lesson.id).padStart(2,'0')+' – '+lesson.title;
+if(metaEl)metaEl.textContent=lesson.level+' · '+(lesson.category||'');
+}else if(titleEl){
+titleEl.textContent='Alle Lektionen abgeschlossen!';
+if(metaEl)metaEl.textContent='Herzlichen Glückwunsch';
 }
-
-function getCurrentLevel(state) {
-  const completed = (state.completedLessons || []).length;
-  if (completed >= 75) return 'B1';
-  if (completed >= 40) return 'A2+';
-  return 'A2';
+const h1=document.getElementById('dashboard-title');
+if(h1)h1.textContent=state.name?'Willkommen zurück, '+state.name+'!':'Willkommen zurück!';
 }
-
-function renderLearningPath() {
-  const container = document.getElementById('learning-path');
-  if (!container) return;
-  const lessons = getAllLessons();
-  const state = window.appState || loadProgress();
-  const completed = new Set(state.completedLessons || []);
-  const currentId = state.currentLessonId || 1;
-
-  container.innerHTML = '';
-
-  lessons.forEach(lesson => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'path-item';
-    btn.setAttribute('role', 'listitem');
-
-    const isCompleted = completed.has(lesson.id);
-    const isCurrent = lesson.id === currentId;
-
-    if (isCompleted) btn.classList.add('completed');
-    if (isCurrent) btn.classList.add('current');
-
-    btn.innerHTML =
-      '<span class="path-number">' + (isCompleted ? '✓' : String(lesson.id).padStart(2, '0')) + '</span>' +
-      '<span class="path-info">' +
-        '<span class="path-title">' + lesson.title + '</span>' +
-        '<span class="path-meta">' + lesson.level + ' · ' + (lesson.category || '') + '</span>' +
-      '</span>';
-
-    btn.addEventListener('click', () => {
-      startLessonView(lesson.id);
-    });
-
-    container.appendChild(btn);
-  });
+function getCurrentLevel(state){
+const done=(state.completedLessons||[]).length;
+if(done>=75)return 'B1';
+if(done>=40)return 'A2+';
+return 'A2';
 }
-
-function startLessonView(id) {
-  if (startLesson(id)) {
-    showPage('lesson');
-  }
+function renderLearningPath(){
+const container=document.getElementById('learning-path');
+if(!container)return;
+const state=window.appState||loadProgress();
+const all=getAllLessons();
+const completed=new Set(state.completedLessons||[]);
+const current=state.currentLessonId||1;
+container.innerHTML='';
+all.forEach(lesson=>{
+const item=document.createElement('div');
+item.className='lesson-item';
+if(completed.has(lesson.id))item.classList.add('done');
+if(lesson.id===current)item.classList.add('current');
+const num=document.createElement('span');
+num.className='lesson-num';
+num.textContent=String(lesson.id).padStart(2,'0');
+const info=document.createElement('div');
+info.className='lesson-info';
+info.innerHTML='<strong>'+escapeHtml(lesson.title)+'</strong><span>'+escapeHtml(lesson.level)+' · '+escapeHtml(lesson.category||'')+'</span>';
+item.appendChild(num);
+item.appendChild(info);
+if(completed.has(lesson.id)){
+const check=document.createElement('span');
+check.className='lesson-check';
+check.textContent='✓';
+item.appendChild(check);
 }
-
-function updateStats() {
-  const state = window.appState || loadProgress();
-  document.getElementById('stats-xp').textContent = state.xp || 0;
-  document.getElementById('stats-lessons').textContent = (state.completedLessons || []).length;
-  document.getElementById('stats-words').textContent = (state.learnedWords || []).length;
-  document.getElementById('stats-level').textContent = getCurrentLevel(state);
-  document.getElementById('stats-streak').textContent = (state.streak || 0) + ' Tage';
-  const dailyXP = state.dailyXP || 0;
-  const goal = state.dailyGoal || 50;
-  document.getElementById('stats-daily').textContent = dailyXP + ' / ' + goal + ' XP';
+item.addEventListener('click',()=>startLesson(lesson.id));
+container.appendChild(item);
+});
 }
-
-function updateProfile() {
-  const state = window.appState || loadProgress();
-  const nameInput = document.getElementById('profile-name');
-  if (nameInput && document.activeElement !== nameInput) {
-    nameInput.value = state.name || '';
-  }
-  document.getElementById('profile-level').textContent = getCurrentLevel(state);
-  document.getElementById('profile-xp').textContent = state.xp || 0;
-  document.getElementById('profile-streak').textContent = (state.streak || 0) + ' Tage';
-  document.getElementById('profile-lessons').textContent = (state.completedLessons || []).length;
+function renderDictionary(filter){
+const list=document.getElementById('dict-list');
+if(!list||typeof DICTIONARY==='undefined')return;
+const q=(filter||'').trim().toLowerCase();
+list.innerHTML='';
+const items=!q?DICTIONARY:DICTIONARY.filter(w=>w.de.toLowerCase().includes(q)||w.pl.toLowerCase().includes(q)||(w.example&&w.example.toLowerCase().includes(q)));
+if(items.length===0){
+list.innerHTML='<p class="small-note">Nichts gefunden.</p>';
+return;
 }
-
-function renderDictionary(filter) {
-  const container = document.getElementById('dict-list');
-  if (!container) return;
-  const words = typeof DICTIONARY !== 'undefined' ? DICTIONARY : [];
-  const q = (filter || '').trim().toLowerCase();
-
-  const filtered = q
-    ? words.filter(w =>
-        w.de.toLowerCase().includes(q) ||
-        w.pl.toLowerCase().includes(q)
-      )
-    : words;
-
-  container.innerHTML = '';
-
-  if (filtered.length === 0) {
-    container.innerHTML = '<p style="color:var(--color-text-muted);padding:16px 0;">Keine Einträge gefunden.</p>';
-    return;
-  }
-
-  filtered.forEach(w => {
-    const item = document.createElement('div');
-    item.className = 'dict-item';
-    item.setAttribute('role', 'listitem');
-    item.innerHTML =
-      '<div class="dict-de">' + escapeHtml(w.de) + '</div>' +
-      '<div class="dict-pl">' + escapeHtml(w.pl) + '</div>' +
-      (w.example ? '<div class="dict-example">„' + escapeHtml(w.example) + '“</div>' : '');
-    container.appendChild(item);
-  });
+items.forEach(w=>{
+const el=document.createElement('div');
+el.className='dict-item';
+el.innerHTML='<div class="de">'+escapeHtml(w.de)+'</div><div class="pl">'+escapeHtml(w.pl)+'</div>'+(w.example?'<div class="ex">'+escapeHtml(w.example)+'</div>':'');
+list.appendChild(el);
+});
 }
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+function updateStats(){
+const grid=document.getElementById('stats-grid');
+if(!grid)return;
+const state=window.appState||loadProgress();
+const done=(state.completedLessons||[]).length;
+const total=100;
+const pct=Math.round((done/total)*100);
+grid.innerHTML='<div class="stat-card"><span class="stat-label">Lektionen</span><span class="stat-value">'+done+' / '+total+'</span></div><div class="stat-card"><span class="stat-label">Fortschritt</span><span class="stat-value">'+pct+'%</span></div><div class="stat-card"><span class="stat-label">XP</span><span class="stat-value">'+(state.xp||0)+'</span></div><div class="stat-card"><span class="stat-label">Serie</span><span class="stat-value">'+(state.streak||0)+' Tage</span></div><div class="stat-card"><span class="stat-label">Wörter</span><span class="stat-value">'+(state.learnedWords||[]).length+'</span></div><div class="stat-card"><span class="stat-label">Level</span><span class="stat-value">'+getCurrentLevel(state)+'</span></div>';
+}
+function updateProfile(){
+const state=window.appState||loadProgress();
+const input=document.getElementById('profile-name');
+if(input)input.value=state.name||'';
+}
+function escapeHtml(str){
+if(!str)return '';
+return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function getAllLessons(){
+const chunks=[];
+if(typeof LESSONS_01_10!=='undefined')chunks.push(...LESSONS_01_10);
+if(typeof LESSONS_11_25!=='undefined')chunks.push(...LESSONS_11_25);
+if(typeof LESSONS_26_50!=='undefined')chunks.push(...LESSONS_26_50);
+if(typeof LESSONS_51_75!=='undefined')chunks.push(...LESSONS_51_75);
+if(typeof LESSONS_76_100!=='undefined')chunks.push(...LESSONS_76_100);
+return chunks;
+}
+function getLessonById(id){
+return getAllLessons().find(l=>l.id===id)||null;
 }

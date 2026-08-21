@@ -1,391 +1,221 @@
-let currentLesson = null;
-let currentExerciseIndex = 0;
-let selectedAnswer = null;
-let orderTokens = [];
-let orderAnswer = [];
-let isChecked = false;
-
-function getAllLessons() {
-  const parts = [
-    typeof LESSONS_01_10 !== 'undefined' ? LESSONS_01_10 : [],
-    typeof LESSONS_11_25 !== 'undefined' ? LESSONS_11_25 : [],
-    typeof LESSONS_26_50 !== 'undefined' ? LESSONS_26_50 : [],
-    typeof LESSONS_51_75 !== 'undefined' ? LESSONS_51_75 : [],
-    typeof LESSONS_76_100 !== 'undefined' ? LESSONS_76_100 : []
-  ];
-  return parts.flat();
+let currentLesson=null;
+let currentIndex=0;
+let selectedAnswer=null;
+let orderSelection=[];
+function startLesson(lessonId){
+const lesson=getLessonById(lessonId);
+if(!lesson){console.warn('Lektion nicht gefunden:',lessonId);return}
+currentLesson=lesson;
+currentIndex=0;
+selectedAnswer=null;
+orderSelection=[];
+const titleEl=document.getElementById('lesson-title');
+const catEl=document.getElementById('lesson-category');
+const xpEl=document.getElementById('lesson-xp-label');
+if(titleEl)titleEl.textContent=lesson.title;
+if(catEl)catEl.textContent=(lesson.level||'')+' · '+(lesson.category||'');
+if(xpEl)xpEl.textContent='+'+(lesson.xp||50)+' XP';
+showPage('lesson');
+loadExercise();
 }
-
-function getLessonById(id) {
-  return getAllLessons().find(l => l.id === id) || null;
+function loadExercise(){
+if(!currentLesson)return;
+const exercises=currentLesson.exercises||[];
+if(currentIndex>=exercises.length){finishLesson();return}
+const ex=exercises[currentIndex];
+selectedAnswer=null;
+orderSelection=[];
+const bar=document.getElementById('lesson-progress');
+if(bar)bar.style.width=Math.round((currentIndex/exercises.length)*100)+'%';
+const feedback=document.getElementById('feedback');
+if(feedback){feedback.className='feedback hidden';feedback.textContent=''}
+const checkBtn=document.getElementById('btn-check');
+const nextBtn=document.getElementById('btn-next');
+if(checkBtn)checkBtn.classList.remove('hidden');
+if(nextBtn)nextBtn.classList.add('hidden');
+const area=document.getElementById('exercise-area');
+if(!area)return;
+area.innerHTML='';
+const q=document.createElement('div');
+q.className='exercise-question';
+q.textContent=ex.question||'';
+area.appendChild(q);
+if(ex.type==='multiple-choice'||ex.type==='true-false'||ex.type==='situation')renderChoices(area,ex);
+else if(ex.type==='fill-blank'||ex.type==='translate-pl-de'||ex.type==='translate-de-pl')renderInput(area,ex);
+else if(ex.type==='order-sentence')renderOrder(area,ex);
+else renderChoices(area,ex);
 }
-
-function startLesson(id) {
-  currentLesson = getLessonById(id);
-  if (!currentLesson) {
-    console.error('Lesson not found:', id);
-    return false;
-  }
-  currentExerciseIndex = 0;
-  selectedAnswer = null;
-  isChecked = false;
-  orderTokens = [];
-  orderAnswer = [];
-  loadExercise();
-  return true;
+function renderChoices(container,ex){
+const wrap=document.createElement('div');
+wrap.className='choices';
+(ex.answers||[]).forEach((ans,i)=>{
+const btn=document.createElement('button');
+btn.className='choice-btn';
+btn.type='button';
+btn.textContent=ans;
+btn.dataset.index=i;
+btn.addEventListener('click',()=>{
+wrap.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+btn.classList.add('selected');
+selectedAnswer=i;
+});
+wrap.appendChild(btn);
+});
+container.appendChild(wrap);
 }
-
-function loadExercise() {
-  if (!currentLesson) return;
-  const exercises = currentLesson.exercises;
-  if (currentExerciseIndex >= exercises.length) {
-    completeLesson();
-    return;
-  }
-
-  const ex = exercises[currentExerciseIndex];
-  selectedAnswer = null;
-  isChecked = false;
-  orderTokens = [];
-  orderAnswer = [];
-
- 
-  const total = exercises.length;
-  const current = currentExerciseIndex + 1;
-  const pct = Math.round((currentExerciseIndex / total) * 100);
-  document.getElementById('lesson-progress-bar').style.width = pct + '%';
-  document.getElementById('lesson-progress-text').textContent = current + ' / ' + total;
-
-
-  document.getElementById('exercise-question').textContent = ex.question;
-
-  resetHints(ex);
-
- 
-  const feedback = document.getElementById('feedback');
-  feedback.hidden = true;
-  feedback.className = 'feedback';
-  feedback.innerHTML = '';
-
-  document.getElementById('btn-check').hidden = false;
-  document.getElementById('btn-check').disabled = true;
-  document.getElementById('btn-next').hidden = true;
-
-  
-  const area = document.getElementById('exercise-area');
-  area.innerHTML = '';
-
-  switch (ex.type) {
-    case 'multiple-choice':
-    case 'single-choice':
-    case 'situation':
-    case 'dialog-complete':
-      renderChoices(area, ex);
-      break;
-    case 'true-false':
-      renderTrueFalse(area, ex);
-      break;
-    case 'fill-blank':
-    case 'translate-pl-de':
-    case 'translate-de-pl':
-    case 'correct-error':
-      renderInput(area, ex);
-      break;
-    case 'order-sentence':
-      renderOrder(area, ex);
-      break;
-    case 'match':
-      renderChoices(area, ex); // vereinfacht als Choice
-      break;
-    default:
-      renderChoices(area, ex);
-  }
+function renderInput(container,ex){
+const wrap=document.createElement('div');
+wrap.className='input-wrap';
+const input=document.createElement('input');
+input.type='text';
+input.id='answer-input';
+input.placeholder='Antwort eingeben…';
+input.autocomplete='off';
+input.addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer()});
+wrap.appendChild(input);
+container.appendChild(wrap);
+setTimeout(()=>input.focus(),50);
 }
-
-function renderChoices(container, ex) {
-  const list = document.createElement('div');
-  list.className = 'choice-list';
-  list.setAttribute('role', 'radiogroup');
-
-  (ex.answers || []).forEach((ans, i) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'choice-btn';
-    btn.textContent = ans;
-    btn.dataset.index = i;
-    btn.setAttribute('role', 'radio');
-    btn.setAttribute('aria-checked', 'false');
-    btn.addEventListener('click', () => {
-      if (isChecked) return;
-      list.querySelectorAll('.choice-btn').forEach(b => {
-        b.classList.remove('selected');
-        b.setAttribute('aria-checked', 'false');
-      });
-      btn.classList.add('selected');
-      btn.setAttribute('aria-checked', 'true');
-      selectedAnswer = i;
-      document.getElementById('btn-check').disabled = false;
-    });
-    list.appendChild(btn);
-  });
-  container.appendChild(list);
+function renderOrder(container,ex){
+const tokens=ex.tokens||[];
+const shuffled=[...tokens].sort(()=>Math.random()-.5);
+const tokenWrap=document.createElement('div');
+tokenWrap.className='order-tokens';
+tokenWrap.id='order-tokens';
+shuffled.forEach((t,i)=>{
+const span=document.createElement('span');
+span.className='token';
+span.textContent=t;
+span.dataset.token=t;
+span.dataset.idx=i;
+span.addEventListener('click',()=>{
+if(span.classList.contains('used'))return;
+span.classList.add('used');
+orderSelection.push(t);
+updateOrderDrop();
+});
+tokenWrap.appendChild(span);
+});
+const drop=document.createElement('div');
+drop.className='order-drop';
+drop.id='order-drop';
+drop.addEventListener('click',()=>{
+if(orderSelection.length===0)return;
+const last=orderSelection.pop();
+tokenWrap.querySelectorAll('.token').forEach(el=>{
+if(el.dataset.token===last&&el.classList.contains('used'))el.classList.remove('used');
+});
+updateOrderDrop();
+});
+container.appendChild(tokenWrap);
+container.appendChild(drop);
 }
-
-function renderTrueFalse(container, ex) {
-  const answers = ex.answers || ['Richtig', 'Falsch'];
-  const list = document.createElement('div');
-  list.className = 'choice-list';
-  answers.forEach((ans, i) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'choice-btn';
-    btn.textContent = ans;
-    btn.dataset.index = i;
-    btn.addEventListener('click', () => {
-      if (isChecked) return;
-      list.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selectedAnswer = i;
-      document.getElementById('btn-check').disabled = false;
-    });
-    list.appendChild(btn);
-  });
-  container.appendChild(list);
+function updateOrderDrop(){
+const drop=document.getElementById('order-drop');
+if(!drop)return;
+drop.innerHTML='';
+orderSelection.forEach(t=>{
+const span=document.createElement('span');
+span.className='token';
+span.textContent=t;
+drop.appendChild(span);
+});
 }
-
-function renderInput(container, ex) {
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.className = 'exercise-input';
-  input.id = 'exercise-text-input';
-  input.placeholder = 'Antwort eingeben…';
-  input.autocomplete = 'off';
-  input.spellcheck = false;
-  input.addEventListener('input', () => {
-    if (isChecked) return;
-    const val = input.value.trim();
-    document.getElementById('btn-check').disabled = val.length === 0;
-    selectedAnswer = val;
-  });
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !document.getElementById('btn-check').disabled) {
-      checkAnswer();
-    }
-  });
-  container.appendChild(input);
-  setTimeout(() => input.focus(), 50);
+function normalizeAnswer(str){
+return String(str||'').trim().toLowerCase().replace(/\s+/g,' ').replace(/[?.!]+$/g,'');
 }
-
-function renderOrder(container, ex) {
-  const tokens = (ex.tokens || (typeof ex.correct === 'string' ? ex.correct.split(' ') : [])).slice();
-  // Shuffle
-  for (let i = tokens.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [tokens[i], tokens[j]] = [tokens[j], tokens[i]];
-  }
-  orderTokens = tokens.map((t, i) => ({ text: t, id: i }));
-  orderAnswer = [];
-
-  const answerBox = document.createElement('div');
-  answerBox.className = 'order-answer';
-  answerBox.id = 'order-answer-box';
-  answerBox.setAttribute('aria-label', 'Ihre Antwort');
-  container.appendChild(answerBox);
-
-  const tokenBox = document.createElement('div');
-  tokenBox.className = 'order-tokens';
-  tokenBox.id = 'order-token-box';
-  orderTokens.forEach(tok => {
-    const el = document.createElement('button');
-    el.type = 'button';
-    el.className = 'order-token';
-    el.textContent = tok.text;
-    el.dataset.id = tok.id;
-    el.addEventListener('click', () => {
-      if (isChecked) return;
-      if (el.classList.contains('used')) return;
-      el.classList.add('used');
-      orderAnswer.push(tok);
-      renderOrderAnswer();
-      document.getElementById('btn-check').disabled = orderAnswer.length === 0;
-    });
-    tokenBox.appendChild(el);
-  });
-  container.appendChild(tokenBox);
-
-  const clearBtn = document.createElement('button');
-  clearBtn.type = 'button';
-  clearBtn.className = 'btn btn-ghost';
-  clearBtn.textContent = 'Zurücksetzen';
-  clearBtn.style.marginTop = '8px';
-  clearBtn.addEventListener('click', () => {
-    if (isChecked) return;
-    orderAnswer = [];
-    document.querySelectorAll('.order-token').forEach(el => el.classList.remove('used'));
-    renderOrderAnswer();
-    document.getElementById('btn-check').disabled = true;
-  });
-  container.appendChild(clearBtn);
+function checkAnswer(){
+if(!currentLesson)return;
+const ex=currentLesson.exercises[currentIndex];
+if(!ex)return;
+let correct=false;
+if(ex.type==='multiple-choice'||ex.type==='true-false'||ex.type==='situation'){
+if(selectedAnswer===null)return;
+correct=selectedAnswer===ex.correct;
+const btns=document.querySelectorAll('.choice-btn');
+btns.forEach((btn,i)=>{
+if(i===ex.correct)btn.classList.add('correct');
+else if(i===selectedAnswer&&!correct)btn.classList.add('wrong');
+btn.disabled=true;
+});
+}else if(ex.type==='fill-blank'||ex.type==='translate-pl-de'||ex.type==='translate-de-pl'){
+const input=document.getElementById('answer-input');
+if(!input)return;
+const normalized=normalizeAnswer(input.value);
+const accepted=Array.isArray(ex.correct)?ex.correct:[ex.correct];
+correct=accepted.some(a=>normalizeAnswer(a)===normalized);
+input.disabled=true;
+input.style.borderColor=correct?'var(--ok)':'var(--bad)';
+}else if(ex.type==='order-sentence'){
+const built=orderSelection.join(' ');
+correct=normalizeAnswer(built)===normalizeAnswer(ex.correct);
 }
-
-function renderOrderAnswer() {
-  const box = document.getElementById('order-answer-box');
-  if (!box) return;
-  box.innerHTML = '';
-  orderAnswer.forEach((tok, idx) => {
-    const el = document.createElement('button');
-    el.type = 'button';
-    el.className = 'order-token';
-    el.textContent = tok.text;
-    el.addEventListener('click', () => {
-      if (isChecked) return;
-      orderAnswer.splice(idx, 1);
-      const tokenEl = document.querySelector('.order-token[data-id="' + tok.id + '"]');
-      if (tokenEl) tokenEl.classList.remove('used');
-      renderOrderAnswer();
-      document.getElementById('btn-check').disabled = orderAnswer.length === 0;
-    });
-    box.appendChild(el);
-  });
+const feedback=document.getElementById('feedback');
+if(feedback){
+feedback.classList.remove('hidden');
+if(correct){
+feedback.className='feedback ok';
+feedback.textContent='Richtig! '+(ex.explanation||'');
+}else{
+feedback.className='feedback bad';
+let msg='Nicht ganz. ';
+if(ex.hints&&ex.hints.solution)msg+='Lösung: '+ex.hints.solution;
+else if(Array.isArray(ex.correct))msg+='Richtig wäre z. B.: '+ex.correct[0];
+else if(typeof ex.correct==='string')msg+='Richtig wäre: '+ex.correct;
+else if(ex.answers&&typeof ex.correct==='number')msg+='Richtig: '+ex.answers[ex.correct];
+if(ex.explanation)msg+=' — '+ex.explanation;
+feedback.textContent=msg;
 }
-
-function resetHints(ex) {
-  const hints = ex.hints || {};
-  ['german', 'polish', 'solution'].forEach(type => {
-    const content = document.getElementById('hint-' + type);
-    const btn = document.querySelector('.hint-btn[data-hint="' + type + '"]');
-    if (content) {
-      content.textContent = hints[type] || '';
-      content.hidden = true;
-    }
-    if (btn) {
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
 }
-
-function showHint(type) {
-  const content = document.getElementById('hint-' + type);
-  const btn = document.querySelector('.hint-btn[data-hint="' + type + '"]');
-  if (!content || !btn) return;
-  const isOpen = !content.hidden;
-  content.hidden = isOpen;
-  btn.setAttribute('aria-expanded', String(!isOpen));
+const checkBtn=document.getElementById('btn-check');
+const nextBtn=document.getElementById('btn-next');
+if(checkBtn)checkBtn.classList.add('hidden');
+if(nextBtn)nextBtn.classList.remove('hidden');
 }
-
-function normalizeAnswer(str) {
-  return String(str)
-    .trim()
-    .toLowerCase()
-    .replace(/[.,!?;:„""]/g, '')
-    .replace(/\s+/g, ' ');
+function showHint(){
+if(!currentLesson)return;
+const ex=currentLesson.exercises[currentIndex];
+if(!ex||!ex.hints)return;
+const feedback=document.getElementById('feedback');
+if(!feedback)return;
+let text='';
+if(ex.hints.german)text+=ex.hints.german;
+if(ex.hints.polish)text+=(text?' / ':'')+ex.hints.polish;
+feedback.className='feedback';
+feedback.style.background='#f0f0e8';
+feedback.style.color='var(--ink-soft)';
+feedback.style.border='1px solid var(--border)';
+feedback.textContent='Hinweis: '+text;
+feedback.classList.remove('hidden');
 }
-
-function checkAnswer() {
-  if (!currentLesson || isChecked) return;
-  const ex = currentLesson.exercises[currentExerciseIndex];
-  let isCorrect = false;
-  let userDisplay = '';
-
-  if (ex.type === 'order-sentence') {
-    const userStr = orderAnswer.map(t => t.text).join(' ');
-    const correctStr = typeof ex.correct === 'string' ? ex.correct : (ex.correct || []).join(' ');
-    isCorrect = normalizeAnswer(userStr) === normalizeAnswer(correctStr);
-    userDisplay = userStr;
-  } else if (['fill-blank', 'translate-pl-de', 'translate-de-pl', 'correct-error'].includes(ex.type)) {
-    const input = document.getElementById('exercise-text-input');
-    const val = (selectedAnswer || (input ? input.value : '')).trim();
-    userDisplay = val;
-    const correct = ex.correct;
-    if (Array.isArray(correct)) {
-      isCorrect = correct.some(c => normalizeAnswer(c) === normalizeAnswer(val));
-    } else {
-      isCorrect = normalizeAnswer(correct) === normalizeAnswer(val);
-    }
-    if (input) {
-      input.classList.add(isCorrect ? 'correct' : 'wrong');
-      input.disabled = true;
-    }
-  } else {
-    const correctIndex = typeof ex.correct === 'number' ? ex.correct : 0;
-    isCorrect = selectedAnswer === correctIndex;
-    userDisplay = (ex.answers || [])[selectedAnswer] || '';
-
-    // Mark buttons
-    const buttons = document.querySelectorAll('.choice-btn');
-    buttons.forEach((btn, i) => {
-      btn.disabled = true;
-      if (i === correctIndex) btn.classList.add('correct');
-      if (i === selectedAnswer && !isCorrect) btn.classList.add('wrong');
-    });
-  }
-
-  isChecked = true;
-  document.getElementById('btn-check').hidden = true;
-
-  const feedback = document.getElementById('feedback');
-  feedback.hidden = false;
-
-  if (isCorrect) {
-    feedback.className = 'feedback correct';
-    const xpGain = ex.xp || 10;
-    feedback.innerHTML = '<strong>Richtig!</strong> ' + (ex.explanation || '') +
-      '<span class="feedback-xp">+' + xpGain + ' XP</span>';
-
-    if (typeof window.onCorrectAnswer === 'function') {
-      window.onCorrectAnswer(xpGain);
-    }
-    document.getElementById('btn-next').hidden = false;
-  } else {
-    feedback.className = 'feedback wrong';
-    let correctText = '';
-    if (typeof ex.correct === 'number') {
-      correctText = (ex.answers || [])[ex.correct] || '';
-    } else if (Array.isArray(ex.correct)) {
-      correctText = ex.correct[0] || '';
-    } else {
-      correctText = ex.correct || '';
-    }
-    feedback.innerHTML = '<strong>Leider falsch.</strong> ' +
-      (ex.explanation || 'Die richtige Antwort lautet: „' + correctText + '“.') +
-      '<br><em>Sie können es erneut versuchen.</em>';
-
-
-    document.getElementById('btn-next').hidden = true;
-    setTimeout(() => {
-      // Nach kurzer Zeit erneut versuchen lassen
-      isChecked = false;
-      selectedAnswer = null;
-      orderAnswer = [];
-      orderTokens = [];
-      document.getElementById('btn-check').hidden = false;
-      document.getElementById('btn-check').disabled = true;
-      loadExercise();
-    }, 2200);
-  }
+function nextExercise(){
+currentIndex++;
+loadExercise();
 }
-
-function nextExercise() {
-  if (!currentLesson) return;
-  currentExerciseIndex++;
-  if (currentExerciseIndex >= currentLesson.exercises.length) {
-    completeLesson();
-  } else {
-    loadExercise();
-  }
+function finishLesson(){
+if(!currentLesson)return;
+const xp=currentLesson.xp||50;
+window.appState=addXP(window.appState,xp);
+window.appState=markLessonComplete(window.appState,currentLesson.id);
+saveProgress(window.appState);
+const bar=document.getElementById('lesson-progress');
+if(bar)bar.style.width='100%';
+const area=document.getElementById('exercise-area');
+if(area)area.innerHTML='<div class="exercise-question">Lektion geschafft!</div><p>Du hast <strong>+'+xp+' XP</strong> bekommen.</p>';
+const feedback=document.getElementById('feedback');
+if(feedback){feedback.className='feedback ok';feedback.textContent='Weiter so!'}
+const checkBtn=document.getElementById('btn-check');
+const nextBtn=document.getElementById('btn-next');
+const hintBtn=document.getElementById('btn-hint');
+if(checkBtn)checkBtn.classList.add('hidden');
+if(hintBtn)hintBtn.classList.add('hidden');
+if(nextBtn){
+nextBtn.textContent='Zurück zum Lernpfad';
+nextBtn.classList.remove('hidden');
+nextBtn.onclick=()=>{
+nextBtn.textContent='Weiter';
+nextBtn.onclick=null;
+showPage('learn');
+};
 }
-
-function completeLesson() {
-  if (!currentLesson) return;
-  const lessonId = currentLesson.id;
-  const bonusXP = currentLesson.xp || 50;
-
-  if (typeof window.onLessonComplete === 'function') {
-    window.onLessonComplete(lessonId, bonusXP);
-  }
-
-  // Zurück zum Lernpfad
-  if (typeof window.showPage === 'function') {
-    window.showPage('learn');
-  }
 }
