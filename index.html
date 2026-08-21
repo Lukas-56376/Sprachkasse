@@ -38,8 +38,8 @@
 </button>
 </nav>
 <div class="sidebar-footer">
-<div class="streak-badge" id="sidebar-streak">
-<span class="streak-fire">🔥</span>
+<div class="streak" id="sidebar-streak">
+<span>🔥</span>
 <span id="sidebar-streak-num">0</span> Tage
 </div>
 </div>
@@ -48,9 +48,9 @@
 <section id="page-dashboard" class="page active">
 <header class="page-header">
 <h1 id="dashboard-title">Willkommen zurück!</h1>
-<p class="page-sub">Dein Weg zum sicheren Deutsch an der Kasse.</p>
+<p class="muted">Dein Weg zum sicheren Deutsch an der Kasse.</p>
 </header>
-<div class="dash-grid">
+<div class="stat-grid">
 <div class="stat-card">
 <span class="stat-label">Level</span>
 <span class="stat-value" id="dash-level">A2</span>
@@ -64,53 +64,53 @@
 <span class="stat-value" id="dash-streak">0 Tage</span>
 </div>
 </div>
-<div class="daily-goal-box">
-<div class="daily-goal-header">
+<div class="goal">
+<div class="goal-head">
 <span>Tagesziel</span>
 <span id="dash-daily-text">0 / 50 XP</span>
 </div>
-<div class="progress-track">
-<div class="progress-fill" id="dash-daily-bar" style="width:0%"></div>
+<div class="bar">
+<div class="bar-fill" id="dash-daily-bar" style="width:0%"></div>
 </div>
 </div>
-<div class="next-lesson-card">
-<div class="next-lesson-label">Nächste Lektion</div>
+<div class="next">
+<div class="muted">Nächste Lektion</div>
 <h2 id="dash-next-title">01 – Begrüßung</h2>
-<p id="dash-next-level" class="next-meta">A2 · Grundlagen</p>
-<button class="btn btn-primary" id="btn-continue">Weiterlernen</button>
+<p id="dash-next-level" class="muted">A2 · Grundlagen</p>
+<button class="btn-primary" id="btn-continue">Weiterlernen</button>
 </div>
 </section>
 <section id="page-learn" class="page">
 <header class="page-header">
 <h1>Lernpfad</h1>
-<p class="page-sub">100 Lektionen von A2 bis B1 – alles rund um den Laden.</p>
+<p class="muted">100 Lektionen von A2 bis B1 – alles rund um den Laden.</p>
 </header>
 <div id="learning-path" class="learning-path"></div>
 </section>
 <section id="page-lesson" class="page">
-<div class="lesson-top">
+<div class="lesson-head">
 <button class="btn-back" id="btn-lesson-back" aria-label="Zurück">←</button>
-<div class="lesson-progress-wrap">
-<div class="lesson-progress-bar" id="lesson-progress"></div>
+<div class="bar">
+<div class="bar-fill" id="lesson-progress"></div>
 </div>
-<span class="lesson-xp" id="lesson-xp-label">+50 XP</span>
+<span class="xp" id="lesson-xp-label">+50 XP</span>
 </div>
 <div class="lesson-body">
 <h2 id="lesson-title">Lektion</h2>
-<p id="lesson-category" class="lesson-cat"></p>
+<p id="lesson-category" class="muted"></p>
 <div id="exercise-area" class="exercise-area"></div>
 <div id="feedback" class="feedback hidden"></div>
 <div class="lesson-actions">
-<button class="btn btn-hint" id="btn-hint">Hinweis</button>
-<button class="btn btn-primary" id="btn-check">Prüfen</button>
-<button class="btn btn-primary hidden" id="btn-next">Weiter</button>
+<button class="btn-hint" id="btn-hint">Hinweis</button>
+<button class="btn-primary" id="btn-check">Prüfen</button>
+<button class="btn-primary hidden" id="btn-next">Weiter</button>
 </div>
 </div>
 </section>
 <section id="page-dictionary" class="page">
 <header class="page-header">
 <h1>Wörterbuch</h1>
-<p class="page-sub">Wichtige Begriffe aus dem Einzelhandel.</p>
+<p class="muted">Wichtige Begriffe aus dem Einzelhandel.</p>
 </header>
 <div class="search-wrap">
 <input type="search" id="dict-search" placeholder="Suchen (DE oder PL)…" autocomplete="off">
@@ -120,9 +120,9 @@
 <section id="page-stats" class="page">
 <header class="page-header">
 <h1>Fortschritt</h1>
-<p class="page-sub">Dein bisheriger Weg.</p>
+<p class="muted">Dein bisheriger Weg.</p>
 </header>
-<div class="stats-grid" id="stats-grid"></div>
+<div class="stat-grid" id="stats-grid"></div>
 </section>
 <section id="page-profile" class="page">
 <header class="page-header">
@@ -131,7 +131,7 @@
 <div class="profile-card">
 <label for="profile-name">Dein Name</label>
 <input type="text" id="profile-name" placeholder="Wie sollen wir dich nennen?" maxlength="30">
-<button class="btn btn-primary" id="btn-save-name">Speichern</button>
+<button class="btn-primary" id="btn-save-name">Speichern</button>
 </div>
 <div class="profile-info">
 <p>SprachKasse ist für polnischsprachige Mitarbeiter im deutschen Einzelhandel gemacht.</p>
