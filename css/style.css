@@ -1,4 +1,3 @@
-
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -100,6 +99,12 @@ body {
   margin-top: 4px;
 }
 
+.page-sub {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -131,6 +136,34 @@ body {
   grid-column: 1 / -1;
 }
 
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: var(--space);
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
 .daily-progress {
   margin-top: 8px;
 }
@@ -155,6 +188,30 @@ body {
   margin-top: 6px;
 }
 
+.daily-goal-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  margin-bottom: var(--space);
+}
+
+.daily-goal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  height: 10px;
+  background: var(--color-border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
 .card-next-lesson {
   margin-top: var(--space);
 }
@@ -166,6 +223,31 @@ body {
 }
 
 .next-level {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space);
+}
+
+.next-lesson-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space);
+}
+
+.next-lesson-card h2 {
+  font-size: 1.25rem;
+  margin: 4px 0 2px;
+}
+
+.next-lesson-label {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.next-meta {
   font-size: 0.875rem;
   color: var(--color-text-muted);
   margin-bottom: var(--space);
@@ -212,6 +294,16 @@ body {
 
 .btn-secondary:hover:not(:disabled),
 .btn-secondary:focus-visible {
+  background: #cfe0da;
+}
+
+.btn-hint {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.btn-hint:hover:not(:disabled),
+.btn-hint:focus-visible {
   background: #cfe0da;
 }
 
@@ -337,8 +429,54 @@ body {
   margin-bottom: var(--space-lg);
 }
 
+.lesson-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: var(--space-lg);
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+  color: var(--color-text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-back:hover,
+.btn-back:focus-visible {
+  background: var(--color-border);
+  outline: none;
+}
+
 .lesson-progress-wrap {
   flex: 1;
+  height: 10px;
+  background: var(--color-border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.lesson-progress-bar {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.lesson-xp {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  color: var(--color-primary);
 }
 
 .lesson-progress-text {
@@ -352,6 +490,17 @@ body {
 .lesson-body {
   max-width: 560px;
   margin: 0 auto;
+}
+
+.lesson-body h2 {
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+}
+
+.lesson-cat {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space);
 }
 
 .exercise-question {
@@ -652,6 +801,21 @@ body {
   font-size: 1.25rem;
 }
 
+.profile-info {
+  margin-top: var(--space-lg);
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
+.profile-info p {
+  margin-bottom: 6px;
+}
+
+.small-note {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -765,6 +929,25 @@ body {
     flex-shrink: 0;
   }
 
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .streak-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: var(--color-text);
+  }
+
+  .streak-fire {
+    font-size: 1rem;
+  }
+
   .bottom-nav {
     display: none;
   }
@@ -822,4 +1005,3 @@ body {
 button:focus:not(:focus-visible) {
   outline: none;
 }
-
