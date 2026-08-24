@@ -118,11 +118,3 @@ function addLearnedWord(state, wordId) {
   }
 
   return state;
-}const next=lessonId+1;
-if(next<=100)state.currentLessonId=next;
-return state;
-}
-function addLearnedWord(state,wordId){
-if(!state.learnedWords.includes(wordId))state.learnedWords.push(wordId);
-return state;
-}
