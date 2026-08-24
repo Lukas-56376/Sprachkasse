@@ -32,6 +32,4 @@ Still working on it 🚧 — adding more lessons and words as I go.
 
 ## Ai usage
 
-AI, was only used to debug and write the CSS. The JS/lessons was made by my brother (20 years old). He just used AI to create the Plan of all lessons and the dictionary. 
-# Sprachkasse
-# Sprachkasse
+AI, was used for the js lektiones and dictionary. The CSS was redesigned by me to look more fun/chatoic/original!
