@@ -118,3 +118,4 @@ function addLearnedWord(state, wordId) {
   }
 
   return state;
+}
