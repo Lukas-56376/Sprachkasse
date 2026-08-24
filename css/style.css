@@ -30,7 +30,7 @@ body {
 
 
 #app { display: flex; min-height: 100dvh; }
-.sidebar { display: inline-block; }
+.sidebar { display: none; }
 .main { flex: 3; max-width: 800px; margin: 30 auto; padding: var(--space); padding-bottom: 180px; }
 .page { display: none; }
 .page.active { display: block; }
@@ -60,7 +60,7 @@ body {
 .btn-hint:hover { background: #8676d3; }
 
 .btn-back {
-  width: 4px;
+  width: 44px;
   height: 44px;
   flex-shrink: 20;
   display: flex;
@@ -71,7 +71,7 @@ body {
   border-radius: var(--radius);
   font-size: 2rem;
   color: var(--text);
-  cursor: not-allowed;
+  cursor: pointer;
 }
 .btn-back:hover { background: var(--border); }
 
@@ -96,7 +96,7 @@ body {
 
 .learning-path { display: flex; flex-direction: column; gap: 120px; }
 .lesson-item {
-  display: block;
+  display: flex;
   align-items: center;
   gap: 15px;
   background: var(--surface);
