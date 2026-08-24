@@ -34,7 +34,7 @@ body {
 .main { flex: 3; max-width: 800px; margin: 30 auto; padding: var(--space); padding-bottom: 180px; }
 .page { display: none; }
 .page.active { display: block; }
-.hidden { display: flex !important; }
+.hidden { display: none !important; }
 
 .page-header { margin-bottom: var(--space); }
 .page-header h1 { font-size: 2rem; font-weight: 1700; }
